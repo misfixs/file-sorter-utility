@@ -1,0 +1,42 @@
+Safe File Sorter - third-party notices
+=====================================
+
+The application source code is released under the MIT License (see LICENSE).
+
+The Windows executables in this project's releases are built with PyInstaller
+and therefore bundle, inside the .exe, the following third-party components.
+They are redistributed under their own licenses, reproduced in summary below.
+No component restricts your use of Safe File Sorter itself.
+
+
+1. Python
+---------
+Bundled as python312.dll plus the standard library.
+License: Python Software Foundation License Version 2 (PSF-2.0).
+Copyright (c) 2001-2026 Python Software Foundation. All rights reserved.
+Full text: https://docs.python.org/3/license.html
+
+
+2. Tcl/Tk (the GUI toolkit behind tkinter)
+------------------------------------------
+Bundled as tcl86t.dll / tk86t.dll plus the Tcl and Tk script libraries and the
+ttk themes.
+License: Tcl/Tk License, a BSD-style license.
+This software is copyrighted by the Regents of the University of California,
+Sun Microsystems, Inc., Scriptics Corporation, and other parties.
+Full text: https://www.tcl.tk/software/tcltk/license.html
+
+
+3. PyInstaller (bootloader and packaging hooks)
+-----------------------------------------------
+Used to produce the executables; the bootloader is embedded in each .exe.
+License: GPL 2.0 with a special exception that explicitly permits building and
+distributing bundled applications under any license of your choosing.
+Copyright (c) 2010-2026, PyInstaller Development Team.
+Full text: https://github.com/pyinstaller/pyinstaller/blob/develop/COPYING.txt
+
+
+Summary for redistribution
+--------------------------
+If you pass these executables on to somebody else, keep this file (or an
+equivalent list) with them. Safe File Sorter's own code stays MIT licensed.

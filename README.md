@@ -175,7 +175,52 @@ reappeared" rule). `gui_workflow.py` drives the actual buttons and worker thread
 preview, sort, a second no-op run, undo and invalid input – with only the modal
 dialogs stubbed out. Tests create their own scratch folders and clean up.
 
-## 7. Where your settings live
+## 7. Building the Windows .exe release
+
+```bat
+python build_exe.py --install-tools    :: once: create .build-venv + install PyInstaller
+python build_exe.py                    :: build dist\SafeFileSorter.exe
+python build_exe.py --clean            :: rebuild from scratch
+python build_exe.py --onedir           :: folder build instead of one file
+python build_exe.py --no-cli           :: GUI executable only
+```
+
+The result lands in `dist\`:
+
+| File | Purpose |
+|---|---|
+| `SafeFileSorter.exe` | the GUI release file — double-click it, no Python needed (10.3 MB) |
+| `SafeFileSorter-CLI.exe` | same engine with a console, for scripts and scheduled tasks |
+
+Both executables are verified by `python tests\exe_smoke.py` (19 checks: dry run,
+sort, undo, exit codes, Unicode names, dedupe, GUI start-up). See
+[RELEASE.md](RELEASE.md) for the notes that ship with the build.
+
+Both are self-contained one-file builds: the standard library, Tcl/Tk and the
+application are inside the `.exe`. `SafeFileSorter-CLI.exe --cli --help` prints
+the command-line reference; `SafeFileSorter.exe --help` prints a short window
+that lists the options.
+
+Notes:
+
+* The build needs no manual steps — `build_exe.py` generates the icon
+  (`packaging/app.ico`) and the Windows version resource
+  (`packaging/version_info.txt`) from `filesorter/version.py`, so bumping the
+  version there versions the whole release.
+* PyInstaller lives in a project-local `.build-venv` when you create one with
+  `--install-tools`; otherwise the build uses whatever interpreter runs
+  `build_exe.py` (PyInstaller must be importable there). Your system Python is
+  never modified by the build itself.
+* `--onedir` produces a folder that starts faster and is easier to code-sign;
+  one-file is the more convenient single artefact to hand to somebody.
+* The executables are unsigned, so Windows SmartScreen may show a "unknown
+  publisher" prompt on first run. Signing requires a code-signing certificate;
+  `signtool sign /fd SHA256 /a dist\SafeFileSorter.exe` is the usual command.
+* Licensing: the application code is MIT (`LICENSE`); the bundled Python,
+  Tcl/Tk and PyInstaller terms are listed in `THIRD-PARTY-NOTICES.txt` — keep
+  that file alongside the executables when you pass them on.
+
+## 8. Where your settings live
 
 The GUI remembers your last choices in a per-user settings file:
 
@@ -188,7 +233,7 @@ The GUI remembers your last choices in a per-user settings file:
 Set the `FILESORTER_SETTINGS` environment variable to keep that file elsewhere
 (the test scripts use this so they never touch your real profile).
 
-## 8. Where to extend
+## 9. Where to extend
 
 * new file categories → `CATEGORY_MAP` in `filesorter/core.py`
 * new placeholders → `TEMPLATE_TOKENS` and `_resolve_tokens()`
@@ -198,7 +243,7 @@ Set the `FILESORTER_SETTINGS` environment variable to keep that file elsewhere
   `SortConfig`, a branch in `plan_actions()`, and (if it is not a move) a new
   record type in `JournalWriter`/`undo_journal()`.
 
-## 9. Known limits
+## 10. Known limits
 
 * Single-threaded engine: one sort runs at a time (the GUI disables the buttons
   and offers STOP).

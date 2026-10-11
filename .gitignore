@@ -4,6 +4,13 @@ __pycache__/
 .venv/
 venv/
 
+# Build tooling and release artefacts
+.build-venv/
+build/
+dist/
+*.spec.bak
+packaging/version_info.txt
+
 # Safe File Sorter runtime artifacts
 .filesorter/
 .tmp/
