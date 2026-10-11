@@ -1,0 +1,12 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Safe File Sorter runtime artifacts
+.filesorter/
+.tmp/
+*.settings.json
+gui-screenshot.png
+smoke-out.png
